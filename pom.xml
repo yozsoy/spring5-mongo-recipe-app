@@ -19,7 +19,7 @@
 	</properties>
 
 	<dependencies>
-		<!--mysql driver added-->
+		<!--mysql driver added version info inherited from spring boot parent pom-->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
