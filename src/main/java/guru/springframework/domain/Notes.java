@@ -3,6 +3,7 @@ package guru.springframework.domain;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 
+@Getter
 @Setter
 public class Notes {
 

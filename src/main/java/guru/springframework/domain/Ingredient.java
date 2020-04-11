@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.math.BigDecimal;
 
+@Getter
 @Setter
 public class Ingredient {
 
