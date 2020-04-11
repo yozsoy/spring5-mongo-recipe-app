@@ -44,22 +44,31 @@ public class IngredientServiceImpl implements IngredientService {
             log.error("recipe id not found. Id: " + recipeId);
         }
 
-        Recipe recipe = recipeOptional.get();
+        Recipe recipe;
+        if(recipeOptional.isPresent())
+            recipe = recipeOptional.get();
+        else
+            throw new RuntimeException("recipe could not be found.");
 
         Optional<IngredientCommand> ingredientCommandOptional = recipe.getIngredients().stream()
                 .filter(ingredient -> ingredient.getId().equals(ingredientId))
-                .map( ingredient -> ingredientToIngredientCommand.convert(ingredient)).findFirst();
+                .map(ingredientToIngredientCommand::convert).findFirst();
 
         if(!ingredientCommandOptional.isPresent()){
             //todo impl error handling
             log.error("Ingredient id not found: " + ingredientId);
         }
 
+        if(!ingredientCommandOptional.isPresent())
+            throw new RuntimeException("ingredientCommand could not be found");
+
+        IngredientCommand ingredientCommand = ingredientCommandOptional.get();
+        ingredientCommand.setRecipeId(recipeId);
+
         return ingredientCommandOptional.get();
     }
 
     @Override
-    @Transactional
     public IngredientCommand saveIngredientCommand(IngredientCommand command) {
         Optional<Recipe> recipeOptional = recipeRepository.findById(command.getRecipeId());
 
@@ -107,6 +116,8 @@ public class IngredientServiceImpl implements IngredientService {
                         .findFirst();
             }
 
+            if(savedIngredientOptional.isPresent())
+                return null;
             //to do check for fail
             return ingredientToIngredientCommand.convert(savedIngredientOptional.get());
         }
